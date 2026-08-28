@@ -1,0 +1,2028 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AGROLEX GAME - Edisi Sulit & Seru</title>
+    <style>
+        /* ============================================================
+                   RESET & BASE
+                ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Poppins', system-ui, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #0a2f1f;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        /* ============================================================
+                   SPLASH SCREEN
+                ============================================================ */
+        #splashScreen {
+            width: 100%;
+            max-width: 660px;
+            min-height: 780px;
+            background: linear-gradient(145deg, #1e5a36, #0f3d24);
+            border-radius: 48px;
+            padding: 40px 30px;
+            box-shadow: 0 25px 50px -8px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(255, 215, 70, 0.15);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 0.8s ease-out;
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            z-index: 1000;
+        }
+
+        #splashScreen.hidden {
+            opacity: 0;
+            transform: scale(0.95);
+            pointer-events: none;
+        }
+
+        #splashScreen::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -30%;
+            width: 200%;
+            height: 80%;
+            background: radial-gradient(ellipse at 30% 20%, rgba(255, 215, 70, 0.08), transparent 70%);
+            pointer-events: none;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .splash-icon {
+            font-size: 100px;
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 10px 30px rgba(246, 203, 55, 0.3));
+            z-index: 2;
+        }
+
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        .splash-title {
+            font-size: 56px;
+            font-weight: 700;
+            color: #f9e07f;
+            letter-spacing: 4px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            margin-top: 10px;
+            z-index: 2;
+        }
+
+        .splash-sub {
+            font-size: 18px;
+            color: #b6ddb6;
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-top: 6px;
+            z-index: 2;
+        }
+
+        .splash-divider {
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #f6cb37, transparent);
+            margin: 18px auto;
+            border-radius: 10px;
+            z-index: 2;
+        }
+
+        .splash-desc {
+            font-size: 15px;
+            color: #c8e6c8;
+            line-height: 1.8;
+            max-width: 380px;
+            margin: 0 auto 30px;
+            z-index: 2;
+            opacity: 0.85;
+        }
+
+        .splash-desc span {
+            display: inline-block;
+            background: rgba(255, 215, 70, 0.12);
+            padding: 2px 12px;
+            border-radius: 20px;
+            color: #ffd447;
+            font-weight: 500;
+        }
+
+        .btn-start {
+            background: linear-gradient(135deg, #f6cb37, #e0b020);
+            color: #1a3a24;
+            border: none;
+            padding: 18px 64px;
+            font-size: 24px;
+            font-weight: 700;
+            border-radius: 60px;
+            cursor: pointer;
+            box-shadow: 0 10px 0 #a67c10, 0 12px 40px rgba(246, 203, 55, 0.35);
+            transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1);
+            letter-spacing: 2px;
+            z-index: 2;
+            position: relative;
+        }
+
+        .btn-start:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 14px 0 #a67c10, 0 20px 50px rgba(246, 203, 55, 0.45);
+        }
+
+        .btn-start:active {
+            transform: scale(0.96) translateY(4px);
+            box-shadow: 0 6px 0 #a67c10;
+        }
+
+        .btn-start .arrow {
+            display: inline-block;
+            margin-left: 10px;
+            transition: transform 0.25s;
+        }
+
+        .btn-start:hover .arrow {
+            transform: translateX(8px);
+        }
+
+        .splash-grain {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.15);
+            letter-spacing: 6px;
+            z-index: 1;
+        }
+
+        .splash-grain span {
+            display: inline-block;
+            animation: shimmer 2s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%,
+            100% {
+                opacity: 0.3;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* ============================================================
+                   GAME UTAMA
+                ============================================================ */
+        #gameContainer {
+            width: 100%;
+            max-width: 660px;
+            min-height: 780px;
+            padding: 28px 22px 20px;
+            border-radius: 48px 48px 32px 32px;
+            background: linear-gradient(145deg, #1e5a36, #0f3d24);
+            box-shadow: 0 25px 50px -8px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(255, 215, 70, 0.2);
+            backdrop-filter: blur(2px);
+            position: relative;
+            overflow: hidden;
+            display: none;
+        }
+
+        #gameContainer.show {
+            display: block;
+            animation: fadeSlide 0.5s ease-out;
+        }
+
+        #gameContainer::before {
+            content: '';
+            position: absolute;
+            top: -40%;
+            left: -20%;
+            width: 180%;
+            height: 70%;
+            background: radial-gradient(ellipse at 30% 20%, rgba(255, 215, 70, 0.08), transparent 70%);
+            pointer-events: none;
+        }
+
+        @keyframes fadeSlide {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 18px;
+            margin-bottom: 22px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo {
+            color: #ffd447;
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .logo span {
+            background: rgba(255, 215, 70, 0.15);
+            padding: 0 14px;
+            border-radius: 30px;
+            font-size: 14px;
+            color: #ffd447;
+        }
+
+        .title {
+            margin: 6px 0 2px;
+            color: #f9e07f;
+            font-size: 40px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        .subtitle {
+            margin: 0;
+            color: #b6ddb6;
+            font-weight: 300;
+            font-size: 15px;
+            letter-spacing: 1px;
+            opacity: 0.9;
+        }
+
+        .screen {
+            display: none;
+            animation: fadeSlide 0.4s ease-out;
+            position: relative;
+            z-index: 2;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        button {
+            border: 0;
+            border-radius: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1);
+            font-family: inherit;
+            letter-spacing: 0.3px;
+        }
+
+        button:hover {
+            transform: translateY(-3px) scale(1.02);
+            filter: brightness(1.08);
+        }
+
+        button:active {
+            transform: scale(0.96);
+        }
+
+        /* ===== MENU UTAMA ===== */
+        .start-btn {
+            width: 100%;
+            height: 160px;
+            background: linear-gradient(135deg, #f6cb37, #f0b800);
+            color: #1a3a24;
+            box-shadow: 0 12px 0 #a67c10, 0 10px 30px rgba(246, 203, 55, 0.4);
+            margin-bottom: 24px;
+            border-radius: 32px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: 0.25s;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 0 #a67c10, 0 18px 40px rgba(246, 203, 55, 0.5);
+        }
+
+        .start-btn .start-icon {
+            font-size: 60px;
+            line-height: 1;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+        }
+
+        .start-btn .start-text {
+            font-size: 30px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-top: 4px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .level-btn {
+            height: 120px;
+            background: rgba(48, 117, 70, 0.7);
+            backdrop-filter: blur(4px);
+            color: white;
+            box-shadow: 0 6px 0 #1d472b, inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+
+        .level-btn:hover {
+            background: rgba(60, 140, 85, 0.8);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 0 #1d472b;
+        }
+
+        .level-icon {
+            font-size: 40px;
+            margin-bottom: 4px;
+            filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
+        }
+
+        .level-name {
+            font-size: 17px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .level-btn.special {
+            background: linear-gradient(145deg, #f6cb37, #dbaa1a);
+            color: #1a3a24;
+            box-shadow: 0 6px 0 #8f6e0e;
+        }
+
+        .level-btn .difficulty {
+            font-size: 11px;
+            opacity: 0.7;
+            margin-top: 2px;
+            letter-spacing: 0.5px;
+        }
+
+        /* ===== CARD ===== */
+        .card {
+            background: rgba(247, 240, 216, 0.92);
+            backdrop-filter: blur(6px);
+            color: #1d3a22;
+            border-radius: 32px;
+            padding: 28px 22px;
+            min-height: 420px;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 12px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .card h2 {
+            text-align: center;
+            color: #1c6937;
+            font-size: 34px;
+            font-weight: 600;
+            margin: 6px 0 16px;
+        }
+
+        .number {
+            text-align: center;
+            color: #b2870b;
+            font-weight: 700;
+            font-size: 15px;
+            letter-spacing: 1px;
+            background: rgba(0, 0, 0, 0.04);
+            padding: 6px 12px;
+            border-radius: 40px;
+            display: inline-block;
+            margin: 0 auto 12px;
+        }
+
+        .text {
+            font-size: 17px;
+            line-height: 1.7;
+            color: #1e3322;
+        }
+
+        /* ===== LEVEL 1 MATERI ===== */
+        .material-illustration {
+            text-align: center;
+            margin: 12px 0 18px;
+            padding: 18px 12px;
+            background: rgba(220, 235, 210, 0.6);
+            border-radius: 28px;
+            border: 2px dashed #2d7a44;
+            backdrop-filter: blur(2px);
+        }
+
+        .material-illustration .icon-big {
+            font-size: 90px;
+            display: block;
+            line-height: 1.2;
+            filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.15));
+        }
+
+        .material-illustration .label {
+            font-weight: 700;
+            color: #1f6a36;
+            font-size: 16px;
+            background: #ffffffcc;
+            padding: 6px 24px;
+            border-radius: 40px;
+            display: inline-block;
+            margin-top: 4px;
+            backdrop-filter: blur(2px);
+        }
+
+        .material-illustration .sub-label {
+            font-size: 13px;
+            color: #3a553a;
+            margin-top: 6px;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #c0d6c0;
+            border-radius: 20px;
+            margin: 16px 0 12px;
+            overflow: hidden;
+        }
+
+        .progress-bar .fill {
+            height: 100%;
+            background: linear-gradient(90deg, #f6cb37, #ffb800);
+            border-radius: 20px;
+            transition: width 0.5s ease;
+            box-shadow: 0 0 12px #f6cb3780;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .yellow-btn {
+            background: linear-gradient(145deg, #f6cb37, #e0b020);
+            color: #173b25;
+            padding: 14px 24px;
+            box-shadow: 0 5px 0 #a87f0e;
+            border-radius: 40px;
+            font-weight: 700;
+            flex: 1;
+            text-align: center;
+            transition: 0.2s;
+        }
+
+        .yellow-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 0 #a87f0e;
+        }
+
+        .home-btn {
+            width: 100%;
+            margin-top: 18px;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(4px);
+            color: white;
+            padding: 16px;
+            border-radius: 40px;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .home-btn:hover {
+            background: rgba(255, 255, 255, 0.22);
+        }
+
+        /* ===== VIDEO PLAYER ===== */
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            margin: 12px 0 18px;
+            border-radius: 28px;
+            overflow: hidden;
+            background: #000;
+            border: 2px solid #2d7a44;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        }
+
+        .video-container video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 26px;
+            background: #000;
+            object-fit: cover;
+        }
+
+        .video-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .video-controls button {
+            background: rgba(45, 122, 68, 0.85);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .video-controls button:hover {
+            background: rgba(60, 160, 90, 0.9);
+        }
+
+        .video-controls .time-display {
+            color: #1a3a24;
+            font-weight: 700;
+            font-size: 16px;
+            background: rgba(255,255,255,0.7);
+            padding: 4px 16px;
+            border-radius: 20px;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .video-progress {
+            width: 100%;
+            height: 6px;
+            background: #c0d6c0;
+            border-radius: 10px;
+            margin: 6px 0 10px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .video-progress .fill {
+            height: 100%;
+            background: linear-gradient(90deg, #f6cb37, #ffb800);
+            border-radius: 10px;
+            transition: width 0.1s linear;
+            width: 0%;
+        }
+
+        .video-status {
+            text-align: center;
+            font-size: 14px;
+            color: #1a3a24;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        /* ===== LEVEL LAIN ===== */
+        .option {
+            width: 100%;
+            padding: 16px 20px;
+            margin: 8px 0;
+            background: #2f7043;
+            color: white;
+            text-align: left;
+            font-size: 16px;
+            border-radius: 20px;
+            transition: 0.15s;
+            box-shadow: 0 4px 0 #1a472b;
+        }
+
+        .option:hover {
+            transform: translateY(-2px);
+            background: #3a8a52;
+        }
+
+        .option.correct {
+            background: #238a4c;
+        }
+
+        .option.wrong {
+            background: #a94242;
+        }
+
+        .option.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .match-area {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            margin: 18px 0;
+        }
+
+        .match-item,
+        .order-item {
+            padding: 14px 12px;
+            margin: 6px 0;
+            border-radius: 18px;
+            background: #2f7043;
+            color: white;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 500;
+            box-shadow: 0 4px 0 #1a472b;
+            transition: 0.15s;
+        }
+
+        .match-item:hover,
+        .order-item:hover {
+            transform: scale(1.02);
+            background: #3d8a55;
+        }
+
+        .match-item.selected,
+        .order-item.selected {
+            outline: 4px solid #ffd447;
+            background: #4a9b63;
+        }
+
+        .match-item.correct,
+        .order-item.correct {
+            background: #238a4c !important;
+        }
+
+        .match-item.wrong,
+        .order-item.wrong {
+            background: #a94242 !important;
+        }
+
+        .match-item.matched {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .timer {
+            text-align: center;
+            font-size: 36px;
+            color: #d0f0a0;
+            font-weight: 700;
+            text-shadow: 0 0 20px #b8f16b80;
+            margin: 4px 0 12px;
+        }
+
+        .timer.danger {
+            color: #ff6b6b;
+            animation: pulse 0.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .finish {
+            text-align: center;
+            padding: 30px 10px;
+        }
+
+        .finish-icon {
+            font-size: 80px;
+            line-height: 1.2;
+        }
+
+        .score {
+            font-size: 56px;
+            color: #ffd447;
+            font-weight: 700;
+            text-shadow: 0 4px 20px #f6cb3780;
+        }
+
+        .feedback {
+            text-align: center;
+            font-weight: 600;
+            min-height: 30px;
+            font-size: 17px;
+            margin: 10px 0 6px;
+        }
+
+        /* ===== LEVEL 5 LIVES ===== */
+        .lives-display {
+            text-align: center;
+            font-size: 28px;
+            margin: 8px 0;
+            letter-spacing: 4px;
+        }
+
+        .lives-display .heart {
+            display: inline-block;
+            transition: all 0.3s;
+        }
+
+        .lives-display .heart.lost {
+            opacity: 0.2;
+            transform: scale(0.8);
+        }
+
+        /* ===== LEVEL 7 COMBO ===== */
+        .combo-display {
+            text-align: center;
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffd447;
+            margin: 6px 0;
+            text-shadow: 0 0 20px rgba(255, 215, 70, 0.3);
+        }
+
+        .combo-display .combo-count {
+            font-size: 32px;
+            color: #f6cb37;
+        }
+
+        /* ===== SOUND TOGGLE ===== */
+        .sound-toggle {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #ffd447;
+            color: #062d1c;
+            border: none;
+            border-radius: 60px;
+            width: 62px;
+            height: 62px;
+            font-size: 32px;
+            cursor: pointer;
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            transition: 0.25s;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .sound-toggle:hover {
+            transform: scale(1.12) rotate(6deg);
+        }
+
+        .sound-toggle.muted {
+            background: #3a3a3a;
+            color: #999;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 650px) {
+            #splashScreen,
+            #gameContainer {
+                padding: 20px 14px;
+                border-radius: 32px;
+                min-height: 650px;
+            }
+
+            .splash-icon {
+                font-size: 72px;
+            }
+
+            .splash-title {
+                font-size: 38px;
+            }
+
+            .splash-sub {
+                font-size: 15px;
+            }
+
+            .btn-start {
+                padding: 16px 40px;
+                font-size: 20px;
+            }
+
+            .splash-desc {
+                font-size: 14px;
+                padding: 0 10px;
+            }
+
+            .title {
+                font-size: 30px;
+            }
+
+            .level-btn {
+                height: 100px;
+            }
+
+            .card {
+                padding: 20px 14px;
+            }
+
+            .text {
+                font-size: 15px;
+            }
+
+            .material-illustration .icon-big {
+                font-size: 70px;
+            }
+
+            .video-container {
+                margin: 8px 0 12px;
+            }
+
+            .sound-toggle {
+                width: 52px;
+                height: 52px;
+                font-size: 26px;
+                bottom: 14px;
+                right: 14px;
+            }
+
+            .start-btn {
+                height: 130px;
+            }
+
+            .start-btn .start-icon {
+                font-size: 44px;
+            }
+
+            .start-btn .start-text {
+                font-size: 24px;
+            }
+
+            .match-area {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .video-controls button {
+                padding: 6px 14px;
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .splash-title {
+                font-size: 30px;
+            }
+            .btn-start {
+                padding: 14px 30px;
+                font-size: 17px;
+            }
+            .splash-icon {
+                font-size: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+    SOUND TOGGLE
+    ============================================================ -->
+    <button class="sound-toggle" id="soundToggle" title="Toggle Suara">🔊</button>
+
+    <!-- ============================================================
+    SPLASH SCREEN
+    ============================================================ -->
+    <div id="splashScreen">
+        <div class="splash-icon">🌾</div>
+        <h1 class="splash-title">AGROLEX</h1>
+        <p class="splash-sub">★ Game Leksikon Pertanian ★</p>
+        <div class="splash-divider"></div>
+        <p class="splash-desc">
+            Belajar istilah pertanian tradisional<br>
+            dengan <span>suara</span> dan <span>animasi</span> interaktif<br>
+            siapkan dirimu untuk 7 level seru!
+        </p>
+        <button class="btn-start" id="btnMulai">
+            Mulai Game
+            <span class="arrow">→</span>
+        </button>
+        <div class="splash-grain">
+            <span>✦</span> <span>✦</span> <span>✦</span> <span>✦</span> <span>✦</span>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    GAME UTAMA
+    ============================================================ -->
+    <div id="gameContainer">
+        <header class="header">
+            <div class="logo">🌾 <span>AGROLEX</span></div>
+            <h1 class="title">AGROLEX GAME</h1>
+            <p class="subtitle">✨ Belajar Leksikon Pertanian • dengan Suara ✨</p>
+        </header>
+
+        <!-- ===== MENU UTAMA ===== -->
+        <section id="menu" class="screen active">
+            <button class="start-btn" onclick="openVideo()">
+                <span class="start-icon">📺</span>
+                <span class="start-text">MULAI VIDEO</span>
+            </button>
+            <div class="grid">
+                <button class="level-btn" onclick="openLevel(1)"><span class="level-icon">📖</span><span class="level-name">Level 1</span><span class="difficulty">⭐ Materi</span></button>
+                <button class="level-btn" onclick="openLevel(2)"><span class="level-icon">🧩</span><span class="level-name">Level 2</span><span class="difficulty">⭐⭐ Pasangkan</span></button>
+                <button class="level-btn" onclick="openLevel(3)"><span class="level-icon">🔀</span><span class="level-name">Level 3</span><span class="difficulty">⭐⭐⭐ Urutan</span></button>
+                <button class="level-btn" onclick="openLevel(4)"><span class="level-icon">⚖️</span><span class="level-name">Level 4</span><span class="difficulty">⭐⭐⭐ B/S</span></button>
+                <button class="level-btn" onclick="openLevel(5)"><span class="level-icon">🎯</span><span class="level-name">Level 5</span><span class="difficulty">⭐⭐⭐⭐ Tebak</span></button>
+                <button class="level-btn" onclick="openLevel(6)"><span class="level-icon">⏱️</span><span class="level-name">Level 6</span><span class="difficulty">⭐⭐⭐⭐ Cepat</span></button>
+                <button class="level-btn" onclick="openLevel(7)"><span class="level-icon">🏆</span><span class="level-name">Level 7</span><span class="difficulty">⭐⭐⭐⭐⭐ Final</span></button>
+                <button class="level-btn special" onclick="showScore()"><span class="level-icon">🏅</span><span class="level-name">Skor</span><span class="difficulty">🏆 Lihat</span></button>
+            </div>
+        </section>
+
+        <!-- ===== LEVEL 1 - MATERI ===== -->
+        <section id="level1" class="screen">
+            <div class="card">
+                <div class="number" id="mNum"></div>
+                <div class="progress-bar">
+                    <div class="fill" id="progressFill" style="width: 11%"></div>
+                </div>
+                <div class="material-illustration" id="materialImage">
+                    <span class="icon-big icon-float" id="imageIcon">🌾</span>
+                    <span class="label" id="imageLabel">Pertanian</span>
+                    <div class="sub-label" id="imageSubLabel">Klik ◀ ▶ untuk navigasi</div>
+                </div>
+                <h2 id="mTitle"></h2>
+                <div class="text" id="mText"></div>
+            </div>
+            <div class="nav">
+                <button class="yellow-btn" onclick="prevMaterial()">◀ Sebelumnya</button>
+                <button class="yellow-btn" onclick="nextMaterial()">Selanjutnya ▶</button>
+            </div>
+            <button class="home-btn" onclick="goMenu()">🏠 Menu</button>
+        </section>
+
+        <!-- ===== LEVEL VIDEO ===== -->
+        <section id="videoLevel" class="screen">
+            <div class="card">
+                <div class="number">📺 VIDEO PEMBELAJARAN</div>
+                <div class="progress-bar">
+                    <div class="fill" id="videoProgressFill" style="width: 0%"></div>
+                </div>
+               
+                <div class="video-container" id="videoContainer">
+                    <video id="agroVideo" preload="metadata" controls>
+                        <source src="https://videotourl.com/videos/1787848175476-cb4fa688-2c94-43a7-ac98-7fbb282aebe3.mp4" type="video/mp4">
+                        Browser Anda tidak mendukung video.
+                    </video>  
+                </div>
+               
+                <div class="video-progress" id="videoProgressBar">
+                    <div class="fill" id="videoProgressFill2" style="width: 0%"></div>
+                </div>
+               
+                <div class="video-controls">
+                    <button onclick="toggleVideo()" id="playBtn">▶ Putar</button>
+                    <button onclick="restartVideo()">⟳ Ulang</button>
+                    <button onclick="setSpeed()" id="speedBtn">1x</button>
+                    <span class="time-display" id="timeDisplay">00:00 / 00:00</span>
+                </div>
+               
+                <div class="video-status" id="videoStatus">⏳ Klik Putar untuk mulai menonton video</div>
+            </div>
+            <button class="yellow-btn" onclick="finishVideo()" style="width:100%;">✅ Selesai & Lanjut</button>
+            <button class="home-btn" onclick="goMenu()" style="margin-top:8px;">🏠 Menu</button>
+        </section>
+
+        <!-- ===== LEVEL 2 - PASANGKAN ===== -->
+        <section id="level2" class="screen">
+            <div class="card">
+                <div class="number">LEVEL 2 — 🧩 PASANGKAN</div>
+                <div class="timer" id="matchTimer">45</div>
+                <h2>Pasangkan Istilah</h2>
+                <p class="text">Pilih istilah di kiri, lalu pengertian yang sesuai di kanan.</p>
+                <div class="match-area">
+                    <div id="terms"></div>
+                    <div id="defs"></div>
+                </div>
+                <p class="feedback" id="matchFeedback"></p>
+                <p class="text" style="font-size:14px;text-align:center;color:#666;">✅ Benar: <span id="matchScore">0</span>/6</p>
+            </div>
+            <button class="home-btn" onclick="goMenu()">🏠 Menu</button>
+        </section>
+
+        <!-- ===== LEVEL 3 - SUSUN URUTAN ===== -->
+        <section id="level3" class="screen">
+            <div class="card">
+                <div class="number">LEVEL 3 — 🔀 SUSUN URUTAN</div>
+                <h2>Susun Runtutan</h2>
+                <p class="text">Klik dua kartu untuk menukar posisi. Susun dari persiapan lahan sampai panen.</p>
+                <div id="orderList"></div>
+                <p class="feedback" id="orderFeedback"></p>
+                <button class="yellow-btn" onclick="checkOrder()" style="width:100%;">Periksa Jawaban</button>
+                <p class="text" style="font-size:14px;text-align:center;color:#666;margin-top:10px;">📊 Peringkat: <span id="orderRank">-</span></p>
+            </div>
+            <button class="home-btn" onclick="goMenu()">🏠 Menu</button>
+        </section>
+
+        <!-- ===== LEVEL 4 - BENAR SALAH ===== -->
+        <section id="level4" class="screen">
+            <div class="card">
+                <div class="number">LEVEL 4 — ⚖️ BENAR ATAU SALAH</div>
+                <p class="text" style="text-align:center;font-size:14px;color:#666;">Soal <span id="tfProgress">1</span>/8</p>
+                <h2 id="tfQuestion"></h2>
+                <button class="option" onclick="answerTF(true)">🟢 BENAR</button>
+                <button class="option" onclick="answerTF(false)">🔴 SALAH</button>
+                <p class="feedback" id="tfFeedback"></p>
+            </div>
+            <button class="home-btn" onclick="goMenu()">🏠 Menu</button>
+        </section>
+
+        <!-- ===== LEVEL 5 - TEBAK ISTILAH ===== -->
+        <section id="level5" class="screen">
+            <div class="card">
+                <div class="number">LEVEL 5 — 🎯 TEBAK ISTILAH</div>
+                <div class="lives-display" id="livesDisplay">
+                    <span class="heart">❤️</span>
+                    <span class="heart">❤️</span>
+                    <span class="heart">❤️</span>
+                </div>
+                <p class="text" style="text-align:center;font-size:14px;color:#666;">Soal <span id="quizProgress">1</span>/6</p>
+                <h2 id="quizQuestion"></h2>
+                <div id="quizOptions"></div>
+                <p class="feedback" id="quizFeedback"></p>
+            </div>
+            <button class="home-btn" onclick="goMenu()">🏠 Menu</button>
+        </section>
+
+        <!-- ===== LEVEL 6 - CEPAT TEPAT ===== -->
+        <section id="level6" class="screen">
+            <div class="card">
+                <div class="number">LEVEL 6 — ⏱️ CEPAT TEPAT</div>
+                <div class="timer" id="speedTimer">20</div>
+                <p class="text" style="text-align:center;font-size:14px;color:#666;">Soal <span id="speedProgress">1</span>/5 • Bonus: <span id="bonusTime">+0</span>s</p>
+                <h2 id="speedQuestion"></h2>
+                <div id="speedOptions"></div>
+                <p class="feedback" id="speedFeedback"></p>
+            </div>
+            <button class="home-btn" onclick="goMenu()">🏠 Menu</button>
+        </section>
+
+        <!-- ===== LEVEL 7 - TANTANGAN AKHIR ===== -->
+        <section id="level7" class="screen">
+            <div class="card">
+                <div class="number">LEVEL 7 — 🏆 TANTANGAN AKHIR</div>
+                <div class="combo-display">🔥 Combo: <span class="combo-count" id="comboCount">0</span>x</div>
+                <p class="text" style="text-align:center;font-size:14px;color:#666;">Soal <span id="finalProgress">1</span>/8</p>
+                <h2 id="finalQuestion"></h2>
+                <div id="finalOptions"></div>
+                <p class="feedback" id="finalFeedback"></p>
+            </div>
+            <button class="home-btn" onclick="goMenu()">🏠 Menu</button>
+        </section>
+
+        <!-- ===== SKOR ===== -->
+        <section id="scoreScreen" class="screen">
+            <div class="card finish">
+                <div class="finish-icon">🏆</div>
+                <h2>SKOR AGROLEX</h2>
+                <div class="score" id="totalScore">0</div>
+                <p class="text" style="color:#2a4a2a;">Semakin banyak jawaban benar, semakin tinggi skor kamu!</p>
+                <div style="margin-top:15px;font-size:14px;color:#666;">
+                    <p>⭐ Level 1: <span id="scoreL1">0</span></p>
+                    <p>📺 Video: <span id="scoreVideo">0</span></p>
+                    <p>🧩 Level 2: <span id="scoreL2">0</span></p>
+                    <p>🔀 Level 3: <span id="scoreL3">0</span></p>
+                    <p>⚖️ Level 4: <span id="scoreL4">0</span></p>
+                    <p>🎯 Level 5: <span id="scoreL5">0</span></p>
+                    <p>⏱️ Level 6: <span id="scoreL6">0</span></p>
+                    <p>🏆 Level 7: <span id="scoreL7">0</span></p>
+                </div>
+            </div>
+            <button class="home-btn" onclick="goMenu()">🏠 Menu</button>
+        </section>
+    </div>
+
+    <!-- ============================================================
+    JAVASCRIPT
+    ============================================================ -->
+    <script>
+        // ============================================================
+        // TRANSISI SPLASH → GAME
+        // ============================================================
+        document.getElementById('btnMulai').addEventListener('click', function() {
+            const splash = document.getElementById('splashScreen');
+            splash.classList.add('hidden');
+
+            setTimeout(() => {
+                splash.style.display = 'none';
+                const game = document.getElementById('gameContainer');
+                game.classList.add('show');
+                sound.init();
+                renderMaterial();
+                setupVideo();
+            }, 700);
+        });
+
+        // ============================================================
+        // SISTEM SUARA DENGAN WEB AUDIO API
+        // ============================================================
+        class SoundSystem {
+            constructor() {
+                this.ctx = null;
+                this.muted = false;
+                this.initialized = false;
+            }
+
+            init() {
+                if (this.initialized) return;
+                try {
+                    this.ctx = new(window.AudioContext || window.webkitAudioContext)();
+                    this.initialized = true;
+                } catch (e) { console.log('Web Audio tidak didukung'); }
+            }
+
+            playTone(freq, duration, type = 'sine', volume = 0.3) {
+                if (this.muted || !this.initialized) return;
+                try {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = type;
+                    osc.frequency.value = freq;
+                    gain.gain.setValueAtTime(volume, this.ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + duration);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start();
+                    osc.stop(this.ctx.currentTime + duration);
+                } catch (e) {}
+            }
+
+            correct() {
+                this.playTone(523, 0.12, 'sine', 0.3);
+                setTimeout(() => this.playTone(659, 0.12, 'sine', 0.3), 120);
+                setTimeout(() => this.playTone(784, 0.2, 'sine', 0.35), 240);
+            }
+
+            wrong() {
+                this.playTone(330, 0.25, 'sawtooth', 0.2);
+                setTimeout(() => this.playTone(277, 0.3, 'sawtooth', 0.2), 200);
+            }
+
+            click() { this.playTone(800, 0.05, 'sine', 0.15); }
+
+            levelComplete() {
+                const notes = [523, 587, 659, 784, 880, 784, 880];
+                notes.forEach((n, i) => setTimeout(() => this.playTone(n, 0.15, 'sine', 0.25), i * 100));
+            }
+
+            timerEnd() { for (let i = 0; i < 3; i++) setTimeout(() => this.playTone(440, 0.3, 'square', 0.2), i * 300); }
+
+            scoreUp() {
+                this.playTone(600, 0.08, 'sine', 0.2);
+                setTimeout(() => this.playTone(800, 0.08, 'sine', 0.25), 80);
+                setTimeout(() => this.playTone(1000, 0.15, 'sine', 0.3), 160);
+            }
+
+            trophy() {
+                const notes = [523, 587, 659, 784, 880, 988, 1047];
+                notes.forEach((n, i) => setTimeout(() => this.playTone(n, 0.1, 'sine', 0.25), i * 80));
+            }
+
+            nav() { this.playTone(500, 0.06, 'sine', 0.12); }
+
+            combo() {
+                this.playTone(600, 0.06, 'sine', 0.2);
+                setTimeout(() => this.playTone(700, 0.06, 'sine', 0.25), 80);
+                setTimeout(() => this.playTone(900, 0.1, 'sine', 0.3), 160);
+            }
+
+            toggle() { this.muted = !this.muted; return this.muted; }
+        }
+
+        const sound = new SoundSystem();
+
+        // ============================================================
+        // TOMBOL TOGGLE SUARA
+        // ============================================================
+        document.getElementById('soundToggle').addEventListener('click', function(e) {
+            e.stopPropagation();
+            sound.init();
+            const muted = sound.toggle();
+            this.textContent = muted ? '🔇' : '🔊';
+            this.classList.toggle('muted', muted);
+        });
+
+        // ============================================================
+        // DATA MATERI
+        // ============================================================
+        const materi = [
+            { judul: "Ngejok", isi: "Ngejok adalah aktivitas pertama yang dilakukan dalam persiapan lahan. Kegiatan ini menuangkan air dari sumur ke seluruh lahan.",
+                icon: "💧", label: "Menyiram Lahan", sub: "Persiapan awal" },
+            { judul: "Namping", isi: "Namping adalah aktivitas yang dilakukan setelah ngejok. Namping merupakan aktivitas merapikan pinggiran lahan dengan menggunakan alat cangkul, biasanya dalam masyarakat disebut dengan pacul.",
+                icon: "⛏️", label: "Merapikan Pinggiran", sub: "Menggunakan Cangkul" },
+            { judul: "Ngluku", isi: "Ngluku merupakan kegiatan membajak sawah yang khusus untuk menebar benih. Tidak semua lahan dibajak, hanya sekitar 10 sampai 25% saja. Kegiatan ini dibantu menggunakan traktor.",
+                icon: "🚜", label: "Membajak Sawah", sub: "Dibantu Traktor" },
+            { judul: "Nggaru", isi: "Nggaru merupakan kegiatan menghaluskan bongkahan-bongkahan tanah bajakan. Kegiatan ini menggunakan alat berbentuk seperti sisir untuk meratakan bongkahan tanah. Setelah itu lahan siap disebar benih.",
+                icon: "🪮", label: "Menghaluskan Tanah", sub: "Alat seperti sisir" },
+            { judul: "Ndaut", isi: "Ndaut merupakan kegiatan mencabut benih padi yang sudah berumur 21 sampai 25 hari untuk ditanam kembali. Kegiatan ini juga bersamaan dengan mocongi, yaitu mengumpulkan padi yang siap tanam kemudian mengikatnya menggunakan kulit bambu.",
+                icon: "🌱", label: "Mencabut Benih Padi", sub: "Umur 21-25 hari" },
+            { judul: "Tandur", isi: "Tandur merupakan kegiatan menanam padi di lahan yang sudah disiapkan. Sebelumnya ada tahap mbanjari dan nempahi. Proses tandur dilakukan dengan pola mundur.",
+                icon: "🌾", label: "Menanam Padi", sub: "Pola mundur" },
+            { judul: "Matun", isi: "Matun merupakan kegiatan membersihkan rumput-rumput di antara tanaman padi dengan menggunakan alat osrok.",
+                icon: "🧹", label: "Membersihkan Rumput", sub: "Menggunakan Osrok" },
+            { judul: "Nyemprot", isi: "Nyemprot merupakan kegiatan menyiramkan pestisida pada tanaman padi untuk membasmi hama. Kegiatan ini dilakukan sampai padi berumur sekitar 40 hari.",
+                icon: "💨", label: "Menyemprot Pestisida", sub: "Sampai umur 40 hari" },
+            { judul: "Panen", isi: "Panen merupakan kegiatan memanen padi. Biasanya masyarakat menggunakan kata 'diret'. Padi dipotong menggunakan arit. Ada juga yang menggunakan erek, yang biasanya disebut dengan 'dipedhal'.",
+                icon: "🌾", label: "Panen Padi", sub: "Menggunakan Arit" }
+        ];
+
+        // ============================================================
+        // VARIABEL & FUNGSI GAME
+        // ============================================================
+        let score = 0,
+            materialPos = 0,
+            tfPos = 0,
+            quizPos = 0,
+            speedPos = 0,
+            finalPos = 0,
+            timerInterval,
+            matchTimerInterval;
+
+        // Skor per level
+        let scorePerLevel = { l1: 0, video: 0, l2: 0, l3: 0, l4: 0, l5: 0, l6: 0, l7: 0 };
+
+        function show(id) {
+            document.querySelectorAll('.screen').forEach(x => x.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            sound.click();
+        }
+
+        function goMenu() {
+            clearInterval(timerInterval);
+            clearInterval(matchTimerInterval);
+            const video = document.getElementById('agroVideo');
+            if (video) video.pause();
+            show('menu');
+        }
+
+        function openLevel(n) {
+            clearInterval(timerInterval);
+            clearInterval(matchTimerInterval);
+            sound.nav();
+            if (n === 1) { materialPos = 0;
+                renderMaterial();
+                show('level1'); }
+            if (n === 2) { setupMatch();
+                show('level2');
+                startMatchTimer(); }
+            if (n === 3) { setupOrder();
+                show('level3'); }
+            if (n === 4) { tfPos = 0;
+                renderTF();
+                show('level4'); }
+            if (n === 5) { quizPos = 0;
+                lives = 3;
+                renderQuiz();
+                show('level5'); }
+            if (n === 6) { speedPos = 0;
+                bonusTime = 0;
+                renderSpeed();
+                show('level6');
+                startSpeedTimer(); }
+            if (n === 7) { finalPos = 0;
+                combo = 0;
+                renderFinal();
+                show('level7'); }
+        }
+
+        function openVideo() {
+            clearInterval(timerInterval);
+            clearInterval(matchTimerInterval);
+            sound.nav();
+            setupVideo();
+            show('videoLevel');
+        }
+
+        function showScore() {
+            document.getElementById('totalScore').textContent = score;
+            document.getElementById('scoreL1').textContent = scorePerLevel.l1 || 0;
+            document.getElementById('scoreVideo').textContent = scorePerLevel.video || 0;
+            document.getElementById('scoreL2').textContent = scorePerLevel.l2 || 0;
+            document.getElementById('scoreL3').textContent = scorePerLevel.l3 || 0;
+            document.getElementById('scoreL4').textContent = scorePerLevel.l4 || 0;
+            document.getElementById('scoreL5').textContent = scorePerLevel.l5 || 0;
+            document.getElementById('scoreL6').textContent = scorePerLevel.l6 || 0;
+            document.getElementById('scoreL7').textContent = scorePerLevel.l7 || 0;
+            sound.trophy();
+            show('scoreScreen');
+        }
+
+        // ============================================================
+        // RENDER LEVEL 1 - MATERI
+        // ============================================================
+        function renderMaterial() {
+            let x = materi[materialPos];
+            document.getElementById('mNum').textContent = `LEKSIKON ${materialPos + 1} DARI ${materi.length}`;
+            document.getElementById('mTitle').textContent = x.judul;
+            document.getElementById('mText').textContent = x.isi;
+            document.getElementById('imageIcon').textContent = x.icon;
+            document.getElementById('imageLabel').textContent = x.label;
+            document.getElementById('imageSubLabel').textContent = x.sub;
+            const progress = ((materialPos + 1) / materi.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            sound.nav();
+        }
+
+        function nextMaterial() {
+            if (materialPos < materi.length - 1) {
+                materialPos++;
+                renderMaterial();
+            } else {
+                score += 20;
+                scorePerLevel.l1 = (scorePerLevel.l1 || 0) + 20;
+                sound.levelComplete();
+                alert('✅ Level 1 selesai! +20 skor 🎉');
+                goMenu();
+            }
+        }
+
+        function prevMaterial() {
+            if (materialPos > 0) {
+                materialPos--;
+                renderMaterial();
+            }
+        }
+
+        // ============================================================
+        // VIDEO PLAYER
+        // ============================================================
+        let videoWatched = false;
+        let currentSpeed = 1;
+
+        function setupVideo() {
+            const video = document.getElementById('agroVideo');
+            videoWatched = false;
+           
+            video.currentTime = 0;
+            video.pause();
+           
+            document.getElementById('playBtn').textContent = '▶ Putar';
+            document.getElementById('videoStatus').textContent = '⏳ Klik Putar untuk mulai menonton video';
+            document.getElementById('videoProgressFill').style.width = '0%';
+            document.getElementById('videoProgressFill2').style.width = '0%';
+           
+            // Remove old listeners and add new ones
+            const newVideo = video.cloneNode(true);
+            video.parentNode.replaceChild(newVideo, video);
+           
+            newVideo.addEventListener('timeupdate', updateVideoProgress);
+            newVideo.addEventListener('ended', function() {
+                videoWatched = true;
+                document.getElementById('videoStatus').textContent = '✅ Video selesai! Klik "Selesai & Lanjut" untuk melanjutkan.';
+                document.getElementById('playBtn').textContent = '⟳ Ulangi';
+                sound.levelComplete();
+            });
+           
+            window.agroVideoElement = newVideo;
+            newVideo.playbackRate = currentSpeed;
+        }
+
+        function updateVideoProgress() {
+            const video = window.agroVideoElement || document.getElementById('agroVideo');
+            if (!video) return;
+           
+            const current = video.currentTime;
+            const duration = video.duration || 1;
+            const percent = (current / duration) * 100;
+           
+            document.getElementById('videoProgressFill').style.width = percent + '%';
+            document.getElementById('videoProgressFill2').style.width = percent + '%';
+           
+            const mins = Math.floor(current / 60);
+            const secs = Math.floor(current % 60);
+            const totalMins = Math.floor(duration / 60);
+            const totalSecs = Math.floor(duration % 60);
+            document.getElementById('timeDisplay').textContent =
+                String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0') + ' / ' +
+                String(totalMins).padStart(2, '0') + ':' + String(totalSecs).padStart(2, '0');
+           
+            if (current > 0 && !video.paused) {
+                document.getElementById('videoStatus').textContent = '▶ Menonton... ' + Math.round(percent) + '%';
+            }
+        }
+
+        function toggleVideo() {
+            const video = window.agroVideoElement || document.getElementById('agroVideo');
+            if (!video) return;
+           
+            sound.init();
+           
+            if (video.paused) {
+                video.play().catch(e => console.log('Autoplay error:', e));
+                document.getElementById('playBtn').textContent = '⏸ Jeda';
+                document.getElementById('videoStatus').textContent = '▶ Menonton...';
+                sound.click();
+            } else {
+                video.pause();
+                document.getElementById('playBtn').textContent = '▶ Putar';
+                document.getElementById('videoStatus').textContent = '⏸ Dijeda';
+                sound.click();
+            }
+        }
+
+        function restartVideo() {
+            const video = window.agroVideoElement || document.getElementById('agroVideo');
+            if (!video) return;
+           
+            video.currentTime = 0;
+            video.pause();
+            document.getElementById('playBtn').textContent = '▶ Putar';
+            document.getElementById('videoStatus').textContent = '⟳ Video diulang. Klik Putar untuk menonton.';
+            sound.click();
+            videoWatched = false;
+        }
+
+        function setSpeed() {
+            const video = window.agroVideoElement || document.getElementById('agroVideo');
+            if (!video) return;
+           
+            const speeds = [0.5, 0.75, 1, 1.25, 1.5, 2];
+            let index = speeds.indexOf(currentSpeed);
+            index = (index + 1) % speeds.length;
+            currentSpeed = speeds[index];
+           
+            video.playbackRate = currentSpeed;
+            document.getElementById('speedBtn').textContent = currentSpeed + 'x';
+            sound.click();
+        }
+
+        function finishVideo() {
+            const video = window.agroVideoElement || document.getElementById('agroVideo');
+            if (!video) return;
+           
+            const progress = video.currentTime / (video.duration || 1);
+           
+            if (progress >= 0.9 || videoWatched) {
+                if (!videoWatched && progress >= 0.9) {
+                    videoWatched = true;
+                }
+               
+                const bonus = 30;
+                score += 20 + bonus;
+                scorePerLevel.video = (scorePerLevel.video || 0) + 20 + bonus;
+                sound.levelComplete();
+                alert('📺 Video selesai! +' + (20 + bonus) + ' skor!');
+                goMenu();
+            } else {
+                const remaining = Math.round((1 - progress) * (video.duration || 1));
+                const minutes = Math.floor(remaining / 60);
+                const seconds = Math.floor(remaining % 60);
+                document.getElementById('videoStatus').textContent =
+                    '⏳ Tonton sampai selesai! Sisa ' +
+                    (minutes > 0 ? minutes + ' menit ' : '') + seconds + ' detik lagi.';
+                sound.wrong();
+            }
+        }
+
+        // Click on progress bar to seek
+        document.addEventListener('DOMContentLoaded', function() {
+            const progressBar = document.getElementById('videoProgressBar');
+            if (progressBar) {
+                progressBar.addEventListener('click', function(e) {
+                    const video = window.agroVideoElement || document.getElementById('agroVideo');
+                    if (!video) return;
+                   
+                    const rect = this.getBoundingClientRect();
+                    const x = (e.clientX - rect.left) / rect.width;
+                    const duration = video.duration || 1;
+                    video.currentTime = x * duration;
+                });
+            }
+        });
+
+        // ============================================================
+        // LEVEL 2 - PASANGKAN
+        // ============================================================
+        const matchData = [
+            ["Ngejok", "Menuangkan air dari sumur ke seluruh lahan."],
+            ["Matun", "Membersihkan rumput di antara tanaman padi."],
+            ["Ngluku", "Membajak sebagian lahan menggunakan traktor."],
+            ["Panen", "Memotong padi menggunakan arit."],
+            ["Nggaru", "Menghaluskan bongkahan tanah bajakan."],
+            ["Ndaut", "Mencabut benih padi yang sudah berumur 21-25 hari."]
+        ];
+        let selectedTerm = null,
+            matchDone = 0,
+            matchScore = 0;
+
+        function setupMatch() {
+            selectedTerm = null;
+            matchDone = 0;
+            matchScore = 0;
+            document.getElementById('matchScore').textContent = '0';
+            document.getElementById('matchFeedback').textContent = '';
+            document.getElementById('terms').innerHTML = '';
+            document.getElementById('defs').innerHTML = '';
+
+            const shuffledTerms = [...matchData].sort(() => Math.random() - 0.5);
+            const shuffledDefs = [...matchData].sort(() => Math.random() - 0.5);
+
+            shuffledTerms.forEach((x, i) => {
+                let b = document.createElement('div');
+                b.className = 'match-item';
+                b.textContent = x[0];
+                b.dataset.i = i;
+                b.dataset.term = x[0];
+                b.onclick = () => {
+                    sound.click();
+                    if (b.classList.contains('matched')) return;
+                    selectedTerm = b;
+                    document.querySelectorAll('#terms .match-item').forEach(z => z.classList.remove('selected'));
+                    b.classList.add('selected');
+                };
+                document.getElementById('terms').appendChild(b);
+            });
+
+            shuffledDefs.forEach(x => {
+                let b = document.createElement('div');
+                b.className = 'match-item';
+                b.textContent = x[1];
+                b.dataset.answer = matchData.findIndex(y => y[1] === x[1]);
+                b.dataset.term = matchData.find(y => y[1] === x[1])[0];
+                b.onclick = () => {
+                    if (selectedTerm === null) return;
+                    if (b.classList.contains('matched')) return;
+                    if (b.dataset.term === selectedTerm.dataset.term) {
+                        sound.correct();
+                        b.classList.add('correct');
+                        b.classList.add('matched');
+                        selectedTerm.classList.add('correct');
+                        selectedTerm.classList.add('matched');
+                        selectedTerm.classList.remove('selected');
+                        matchDone++;
+                        matchScore += 10;
+                        document.getElementById('matchScore').textContent = matchScore;
+                        selectedTerm = null;
+                        if (matchDone === matchData.length) {
+                            clearInterval(matchTimerInterval);
+                            const bonus = matchScore > 0 ? matchScore : 0;
+                            score += 30 + bonus;
+                            scorePerLevel.l2 = (scorePerLevel.l2 || 0) + 30 + bonus;
+                            sound.levelComplete();
+                            document.getElementById('matchFeedback').textContent = '🎉 Semua pasangan benar! +' + (30 +
+                                bonus) + ' skor!';
+                            setTimeout(goMenu, 1200);
+                        }
+                    } else {
+                        sound.wrong();
+                        b.classList.add('wrong');
+                        selectedTerm.classList.add('wrong');
+                        setTimeout(() => {
+                            b.classList.remove('wrong');
+                            selectedTerm.classList.remove('wrong');
+                            selectedTerm.classList.remove('selected');
+                            selectedTerm = null;
+                        }, 500);
+                    }
+                };
+                document.getElementById('defs').appendChild(b);
+            });
+        }
+
+        function startMatchTimer() {
+            let time = 45;
+            document.getElementById('matchTimer').textContent = time;
+            matchTimerInterval = setInterval(() => {
+                time--;
+                document.getElementById('matchTimer').textContent = time;
+                if (time <= 5 && time > 0) {
+                    sound.playTone(1000, 0.05, 'sine', 0.1);
+                }
+                if (time <= 0) {
+                    clearInterval(matchTimerInterval);
+                    sound.timerEnd();
+                    document.getElementById('matchFeedback').textContent = '⏰ Waktu habis!';
+                    setTimeout(goMenu, 700);
+                }
+            }, 1000);
+        }
+
+        // ============================================================
+        // LEVEL 3 - SUSUN URUTAN
+        // ============================================================
+        const correctOrder = ["Ngejok", "Namping", "Ngluku", "Nggaru", "Ndaut", "Mbanjari", "Nempahi", "Tandur", "Matun",
+            "Nyemprot", "Panen"
+        ];
+        let order = [],
+            selectedOrder = null;
+
+        function setupOrder() {
+            order = [...correctOrder].sort(() => Math.random() - 0.5);
+            selectedOrder = null;
+            renderOrder();
+            document.getElementById('orderFeedback').textContent = '';
+            document.getElementById('orderRank').textContent = '-';
+        }
+
+        function renderOrder() {
+            const ol = document.getElementById('orderList');
+            ol.innerHTML = '';
+            order.forEach((x, i) => {
+                let b = document.createElement('div');
+                b.className = 'order-item';
+                b.textContent = (i + 1) + '. ' + x;
+                b.onclick = () => {
+                    sound.click();
+                    if (selectedOrder === null) {
+                        selectedOrder = i;
+                        b.classList.add('selected');
+                    } else if (selectedOrder === i) {
+                        b.classList.remove('selected');
+                        selectedOrder = null;
+                    } else {
+                        [order[selectedOrder], order[i]] = [order[i], order[selectedOrder]];
+                        selectedOrder = null;
+                        renderOrder();
+                    }
+                };
+                ol.appendChild(b);
+            });
+        }
+
+        function checkOrder() {
+            let correct = 0;
+            order.forEach((x, i) => {
+                if (x === correctOrder[i]) correct++;
+            });
+
+            const rank = Math.round((correct / correctOrder.length) * 100);
+            document.getElementById('orderRank').textContent = rank + '%';
+
+            if (rank === 100) {
+                const bonus = 50;
+                score += 50 + bonus;
+                scorePerLevel.l3 = (scorePerLevel.l3 || 0) + 50 + bonus;
+                sound.levelComplete();
+                document.getElementById('orderFeedback').textContent = '🏆 Sempurna! +' + (50 + bonus) + ' skor!';
+                setTimeout(goMenu, 1200);
+            } else if (rank >= 80) {
+                const bonus = 20;
+                score += 30 + bonus;
+                scorePerLevel.l3 = (scorePerLevel.l3 || 0) + 30 + bonus;
+                sound.correct();
+                document.getElementById('orderFeedback').textContent = '✅ Bagus! +' + (30 + bonus) + ' skor (' + rank +
+                    '% benar)';
+                setTimeout(goMenu, 1200);
+            } else if (rank >= 60) {
+                score += 15;
+                scorePerLevel.l3 = (scorePerLevel.l3 || 0) + 15;
+                document.getElementById('orderFeedback').textContent = '👍 Lumayan! +15 skor (' + rank + '% benar)';
+                setTimeout(goMenu, 1200);
+            } else {
+                sound.wrong();
+                document.getElementById('orderFeedback').textContent = '❌ Masih perlu latihan (' + rank + '% benar)';
+            }
+        }
+
+        // ============================================================
+        // LEVEL 4 - BENAR SALAH
+        // ============================================================
+        const tf = [
+            ["Matun adalah kegiatan membersihkan rumput di antara tanaman padi.", true],
+            ["Ngluku menggunakan alat arit untuk membajak sawah.", false],
+            ["Ngejok dilakukan sebelum Namping dalam persiapan lahan.", true],
+            ["Panen dilakukan menggunakan osrok untuk memotong padi.", false],
+            ["Nggaru adalah kegiatan menghaluskan bongkahan tanah bajakan.", true],
+            ["Tandur dilakukan dengan pola maju ke depan.", false],
+            ["Nyemprot dilakukan sampai padi berumur sekitar 40 hari.", true],
+            ["Ndaut mencabut benih padi yang berumur 30-35 hari.", false]
+        ];
+
+        function renderTF() {
+            document.getElementById('tfProgress').textContent = tfPos + 1;
+            document.getElementById('tfQuestion').textContent = tf[tfPos][0];
+            document.getElementById('tfFeedback').textContent = '';
+        }
+
+        function answerTF(ans) {
+            if (ans === tf[tfPos][1]) {
+                score += 15;
+                scorePerLevel.l4 = (scorePerLevel.l4 || 0) + 15;
+                sound.correct();
+                document.getElementById('tfFeedback').textContent = '✅ Benar! +15';
+                setTimeout(() => {
+                    tfPos++;
+                    if (tfPos < tf.length) renderTF();
+                    else {
+                        const bonus = 20;
+                        score += bonus;
+                        scorePerLevel.l4 = (scorePerLevel.l4 || 0) + bonus;
+                        sound.levelComplete();
+                        alert('🏆 Level 4 selesai! Bonus +' + bonus + ' skor!');
+                        goMenu();
+                    }
+                }, 500);
+            } else {
+                sound.wrong();
+                document.getElementById('tfFeedback').textContent = '❌ Salah, coba lagi.';
+            }
+        }
+
+        // ============================================================
+        // LEVEL 5 - TEBAK ISTILAH
+        // ============================================================
+        let lives = 3;
+
+        const quiz = [
+            ["Kegiatan membersihkan rumput di antara tanaman padi disebut...", ["Ndaut", "Matun", "Nggaru", "Ngejok",
+                    "Namping"
+                ], 1],
+            ["Alat untuk memotong padi saat panen adalah...", ["Pacul", "Osrok", "Arit", "Traktor", "Erek"], 2],
+            ["Kegiatan membajak sawah sebagian untuk menebar benih disebut...", ["Ngluku", "Tandur", "Panen", "Nyemprot",
+                    "Nggaru"
+                ], 0],
+            ["Kegiatan mencabut benih padi yang berumur 21-25 hari disebut...", ["Ngejok", "Namping", "Ndaut", "Matun",
+                    "Tandur"
+                ], 2],
+            ["Alat yang digunakan saat Matun untuk membersihkan rumput adalah...", ["Arit", "Osrok", "Traktor", "Pacul",
+                    "Cangkul"
+                ], 1],
+            ["Kegiatan menanam padi dengan pola mundur disebut...", ["Ngluku", "Nggaru", "Ndaut", "Tandur", "Panen"],
+                3
+            ]
+        ];
+
+        function renderQuiz() {
+            document.getElementById('quizProgress').textContent = quizPos + 1;
+            let q = quiz[quizPos];
+            document.getElementById('quizQuestion').textContent = q[0];
+            const qo = document.getElementById('quizOptions');
+            qo.innerHTML = '';
+            const shuffled = q[1].map((x, i) => ({ text: x, index: i })).sort(() => Math.random() - 0.5);
+            shuffled.forEach(({ text, index }) => {
+                let b = document.createElement('button');
+                b.className = 'option';
+                b.textContent = String.fromCharCode(65 + index) + '. ' + text;
+                b.dataset.idx = index;
+                b.onclick = () => answerQuiz(index);
+                qo.appendChild(b);
+            });
+            document.getElementById('quizFeedback').textContent = '';
+            updateLivesDisplay();
+        }
+
+        function updateLivesDisplay() {
+            const display = document.getElementById('livesDisplay');
+            display.innerHTML = '';
+            for (let i = 0; i < 3; i++) {
+                let span = document.createElement('span');
+                span.className = 'heart' + (i >= lives ? ' lost' : '');
+                span.textContent = '❤️';
+                display.appendChild(span);
+            }
+        }
+
+        function answerQuiz(i) {
+            const options = document.querySelectorAll('#quizOptions .option');
+            options.forEach(btn => btn.classList.add('disabled'));
+
+            if (i === quiz[quizPos][2]) {
+                const bonus = lives === 3 ? 30 : lives === 2 ? 20 : 10;
+                score += 15 + bonus;
+                scorePerLevel.l5 = (scorePerLevel.l5 || 0) + 15 + bonus;
+                sound.scoreUp();
+                document.getElementById('quizFeedback').textContent = '✅ Benar! +' + (15 + bonus) + ' skor!';
+                setTimeout(() => {
+                    quizPos++;
+                    if (quizPos < quiz.length) renderQuiz();
+                    else {
+                        const extra = 30;
+                        score += extra;
+                        scorePerLevel.l5 = (scorePerLevel.l5 || 0) + extra;
+                        sound.levelComplete();
+                        alert('🏆 Level 5 selesai! Bonus +' + extra + ' skor!');
+                        goMenu();
+                    }
+                }, 700);
+            } else {
+                lives--;
+                updateLivesDisplay();
+                sound.wrong();
+                document.getElementById('quizFeedback').textContent = '❌ Salah! Sisa nyawa: ' + lives;
+                if (lives === 0) {
+                    document.getElementById('quizFeedback').textContent = '💀 Game Over! Skor terkumpul: ' + score;
+                    setTimeout(goMenu, 1200);
+                } else {
+                    setTimeout(() => {
+                        options.forEach(btn => btn.classList.remove('disabled'));
+                    }, 600);
+                }
+            }
+        }
+
+        // ============================================================
+        // LEVEL 6 - CEPAT TEPAT
+        // ============================================================
+        let bonusTime = 0;
+
+        const speed = [
+            ["Alat untuk memotong padi saat panen?", ["Pacul", "Osrok", "Arit", "Traktor", "Erek"], 2],
+            ["Alat yang digunakan saat Matun?", ["Arit", "Osrok", "Traktor", "Pacul", "Cangkul"], 1],
+            ["Ngluku dibantu menggunakan alat apa?", ["Traktor", "Arit", "Osrok", "Erek", "Pacul"], 0],
+            ["Kegiatan menghaluskan tanah bajakan disebut?", ["Ngluku", "Nggaru", "Namping", "Ngejok", "Tandur"], 1],
+            ["Kegiatan mencabut benih padi berumur 21-25 hari?", ["Ndaut", "Matun", "Tandur", "Panen", "Ngejok"], 0]
+        ];
+
+        function startSpeedTimer() {
+            let time = 20;
+            document.getElementById('speedTimer').textContent = time;
+            timerInterval = setInterval(() => {
+                time--;
+                document.getElementById('speedTimer').textContent = time;
+                if (time <= 3 && time > 0) {
+                    sound.playTone(1000, 0.05, 'sine', 0.1);
+                    document.getElementById('speedTimer').classList.add('danger');
+                }
+                if (time <= 0) {
+                    clearInterval(timerInterval);
+                    sound.timerEnd();
+                    document.getElementById('speedFeedback').textContent = '⏰ Waktu habis!';
+                    setTimeout(goMenu, 700);
+                }
+            }, 1000);
+        }
+
+        function renderSpeed() {
+            document.getElementById('speedProgress').textContent = speedPos + 1;
+            document.getElementById('bonusTime').textContent = '+' + bonusTime + 's';
+            let q = speed[speedPos];
+            document.getElementById('speedQuestion').textContent = q[0];
+            const so = document.getElementById('speedOptions');
+            so.innerHTML = '';
+            const shuffled = q[1].map((x, i) => ({ text: x, index: i })).sort(() => Math.random() - 0.5);
+            shuffled.forEach(({ text, index }) => {
+                let b = document.createElement('button');
+                b.className = 'option';
+                b.textContent = String.fromCharCode(65 + index) + '. ' + text;
+                b.dataset.idx = index;
+                b.onclick = () => answerSpeed(index);
+                so.appendChild(b);
+            });
+        }
+
+        function answerSpeed(i) {
+            const options = document.querySelectorAll('#speedOptions .option');
+            options.forEach(btn => btn.classList.add('disabled'));
+
+            if (i === speed[speedPos][2]) {
+                const timeBonus = Math.floor(Math.random() * 3) + 1;
+                bonusTime += timeBonus;
+                const points = 20 + (bonusTime * 2);
+                score += points;
+                scorePerLevel.l6 = (scorePerLevel.l6 || 0) + points;
+                sound.scoreUp();
+                document.getElementById('speedFeedback').textContent = '⚡ Benar! +' + points + ' skor (Bonus +' + timeBonus +
+                    's)';
+                speedPos++;
+                if (speedPos < speed.length) {
+                    setTimeout(renderSpeed, 500);
+                } else {
+                    clearInterval(timerInterval);
+                    const extra = 40;
+                    score += extra;
+                    scorePerLevel.l6 = (scorePerLevel.l6 || 0) + extra;
+                    sound.levelComplete();
+                    alert('🏆 Level 6 selesai! Bonus +' + extra + ' skor!');
+                    goMenu();
+                }
+            } else {
+                sound.wrong();
+                document.getElementById('speedFeedback').textContent = '❌ Salah!';
+                setTimeout(() => {
+                    options.forEach(btn => btn.classList.remove('disabled'));
+                }, 500);
+            }
+        }
+
+        // ============================================================
+        // LEVEL 7 - TANTANGAN AKHIR
+        // ============================================================
+        let combo = 0;
+
+        const finalQ = [
+            ["Istilah untuk kegiatan menuangkan air ke lahan?", ["Ngejok", "Tandur", "Matun", "Panen", "Namping"], 0],
+            ["Istilah membersihkan rumput di antara tanaman padi?", ["Ndaut", "Matun", "Nggaru", "Namping", "Tandur"],
+            1],
+            ["Alat yang membantu Ngluku untuk membajak?", ["Arit", "Osrok", "Traktor", "Erek", "Pacul"], 2],
+            ["Kegiatan menanam padi dengan pola mundur?", ["Tandur", "Nggaru", "Ngejok", "Panen", "Matun"], 0],
+            ["Alat untuk memotong padi saat panen?", ["Pacul", "Arit", "Osrok", "Traktor", "Cangkul"], 1],
+            ["Kegiatan menghaluskan bongkahan tanah bajakan?", ["Ngluku", "Nggaru", "Namping", "Ngejok", "Tandur"],
+            1],
+            ["Kegiatan mencabut benih padi berumur 21-25 hari?", ["Ndaut", "Matun", "Tandur", "Panen", "Ngejok"], 0],
+            ["Kegiatan menyemprot pestisida sampai umur berapa hari?", ["30 hari", "40 hari", "50 hari", "60 hari",
+                    "25 hari"
+                ], 1]
+        ];
+
+        function renderFinal() {
+            document.getElementById('finalProgress').textContent = finalPos + 1;
+            let q = finalQ[finalPos];
+            document.getElementById('finalQuestion').textContent = q[0];
+            const fo = document.getElementById('finalOptions');
+            fo.innerHTML = '';
+            const shuffled = q[1].map((x, i) => ({ text: x, index: i })).sort(() => Math.random() - 0.5);
+            shuffled.forEach(({ text, index }) => {
+                let b = document.createElement('button');
+                b.className = 'option';
+                b.textContent = String.fromCharCode(65 + index) + '. ' + text;
+                b.dataset.idx = index;
+                b.onclick = () => answerFinal(index);
+                fo.appendChild(b);
+            });
+            document.getElementById('finalFeedback').textContent = '';
+            document.getElementById('comboCount').textContent = combo;
+        }
+
+        function answerFinal(i) {
+            const options = document.querySelectorAll('#finalOptions .option');
+            options.forEach(btn => btn.classList.add('disabled'));
+
+            if (i === finalQ[finalPos][2]) {
+                combo++;
+                const comboBonus = Math.min(combo, 5) * 5;
+                const points = 25 + comboBonus;
+                score += points;
+                scorePerLevel.l7 = (scorePerLevel.l7 || 0) + points;
+                sound.combo();
+                document.getElementById('comboCount').textContent = combo;
+                document.getElementById('finalFeedback').textContent = '🔥 Combo x' + combo + '! +' + points + ' skor!';
+                setTimeout(() => {
+                    finalPos++;
+                    if (finalPos < finalQ.length) renderFinal();
+                    else {
+                        const extra = 50;
+                        score += extra;
+                        scorePerLevel.l7 = (scorePerLevel.l7 || 0) + extra;
+                        sound.trophy();
+                        alert('🏆 TANTANGAN AGROLEX SELESAI! Bonus +' + extra + ' skor!');
+                        showScore();
+                    }
+                }, 700);
+            } else {
+                combo = 0;
+                document.getElementById('comboCount').textContent = combo;
+                sound.wrong();
+                document.getElementById('finalFeedback').textContent = '❌ Salah! Combo reset.';
+                setTimeout(() => {
+                    options.forEach(btn => btn.classList.remove('disabled'));
+                }, 500);
+            }
+        }
+
+        // ============================================================
+        // INISIALISASI AWAL
+        // ============================================================
+        console.log('🌾 AGROLEX GAME - Edisi Sulit & Seru!');
+        console.log('🔊 Klik tombol 🔊 di pojok kanan bawah untuk mute/unmute');
+        console.log('📖 Level 1: Materi Pembelajaran');
+        console.log('📺 Tombol MULAI VIDEO: Video pembelajaran terpisah');
+    </script>
+
+</body>
+</html>s
